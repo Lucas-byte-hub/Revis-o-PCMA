@@ -1,0 +1,52 @@
+<main id="revision-panel">
+<style>
+#revision-panel{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:light-dark(#f7f8fa,#101216);color:light-dark(#18202a,#f2f4f7);padding:32px 20px;box-sizing:border-box}
+#revision-panel *{box-sizing:border-box}
+.rp-wrap{max-width:900px;margin:0 auto}
+.rp-hero{background:light-dark(#ffffff,#191c22);border:1px solid light-dark(#e3e7ed,#2a2f38);border-radius:22px;padding:28px;margin-bottom:20px}
+.rp-kicker{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;opacity:.65;margin-bottom:8px}
+.rp-title{font-size:30px;line-height:1.1;font-weight:850;margin:0 0 10px}
+.rp-sub{font-size:15px;line-height:1.55;opacity:.72;max-width:680px;margin:0}
+.rp-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:22px}
+.rp-stat{background:light-dark(#f5f7f9,#22262e);border-radius:14px;padding:14px}
+.rp-stat strong{display:block;font-size:20px;margin-bottom:3px}.rp-stat span{font-size:12px;opacity:.65}
+.rp-section{background:light-dark(#ffffff,#191c22);border:1px solid light-dark(#e3e7ed,#2a2f38);border-radius:22px;padding:24px;margin-bottom:18px}
+.rp-section h2{font-size:19px;margin:0 0 5px}.rp-section p{font-size:13px;opacity:.65;margin:0 0 18px}
+.rp-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 0;border-top:1px solid light-dark(#e8ebef,#2a2f38)}
+.rp-row:first-of-type{border-top:0}.rp-name{font-weight:750}.rp-meta{font-size:12px;opacity:.6;margin-top:4px}
+.rp-btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 16px;border:0;border-radius:11px;background:var(--viz-accent,#315efb);color:white;text-decoration:none;font-weight:750;font-size:13px;white-space:nowrap}
+.rp-btn:hover{filter:brightness(.95)}
+.rp-soon{opacity:.55;pointer-events:none;background:light-dark(#dfe3e8,#343943)}
+.rp-note{font-size:12px;line-height:1.5;opacity:.62;margin-top:14px}
+@media(max-width:650px){#revision-panel{padding:20px 14px}.rp-hero,.rp-section{padding:20px;border-radius:17px}.rp-title{font-size:25px}.rp-grid{grid-template-columns:1fr}.rp-row{align-items:flex-start;flex-direction:column}.rp-btn{width:100%}}
+</style>
+<div class="rp-wrap">
+<section class="rp-hero">
+<div class="rp-kicker">Semana decisiva</div>
+<h1 class="rp-title">Revisão Pré-Prova</h1>
+<p class="rp-sub">Resolva aproximadamente 15 questões por matéria diretamente nos cadernos previamente selecionados no TEC Concursos.</p>
+<div class="rp-grid">
+<div class="rp-stat"><strong>15</strong><span>questões por matéria</span></div>
+<div class="rp-stat"><strong>TEC</strong><span>acesso aos cadernos</span></div>
+<div class="rp-stat"><strong>D-7</strong><span>última semana</span></div>
+</div>
+</section>
+<section class="rp-section">
+<h2>📚 Revisão da Semana</h2>
+<p>Comece pela revisão geral das matérias.</p>
+<div class="rp-row"><div><div class="rp-name">Caderno de teste</div><div class="rp-meta">15 questões • link já configurado</div></div><a class="rp-btn" href="https://www.tecconcursos.com.br/questoes/cadernos/101625688" target="_blank" rel="noopener noreferrer">▶ Resolver questões</a></div>
+<div class="rp-row"><div><div class="rp-name">Língua Portuguesa</div><div class="rp-meta">15 questões • aguardando caderno</div></div><button class="rp-btn rp-soon" type="button" disabled>Link em breve</button></div>
+<div class="rp-row"><div><div class="rp-name">Direito Constitucional</div><div class="rp-meta">15 questões • aguardando caderno</div></div><button class="rp-btn rp-soon" type="button" disabled>Link em breve</button></div>
+<div class="rp-row"><div><div class="rp-name">Direito Administrativo</div><div class="rp-meta">15 questões • aguardando caderno</div></div><button class="rp-btn rp-soon" type="button" disabled>Link em breve</button></div>
+</section>
+<section class="rp-section">
+<h2>🔥 Reta Final</h2>
+<p>Bloco reservado para os cadernos de revisão dos últimos dias.</p>
+<div class="rp-row"><div><div class="rp-name">Pontos fracos</div><div class="rp-meta">15 questões • caderno a definir</div></div><button class="rp-btn rp-soon" type="button" disabled>Link em breve</button></div>
+<div class="rp-row"><div><div class="rp-name">Questões da banca</div><div class="rp-meta">15 questões • caderno a definir</div></div><button class="rp-btn rp-soon" type="button" disabled>Link em breve</button></div>
+<div class="rp-row"><div><div class="rp-name">Revisão de véspera</div><div class="rp-meta">15 questões • caderno a definir</div></div><button class="rp-btn rp-soon" type="button" disabled>Link em breve</button></div>
+<p class="rp-note">Importante: os botões levam o estudante ao TEC Concursos. Para acessar os cadernos, o aluno deverá estar autenticado na plataforma.</p>
+<p class="rp-note">Este painel está pronto para ser salvo como index.html e publicado no GitHub Pages.</p>
+</section>
+</div>
+</main>
