@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Revisão PCMA</title>
+<style>
+:root{--navy:#062451;--blue:#1267e8;--text:#102044;--muted:#68758c;--border:#dfe6f0;--bg:#f7f9fc}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+button,input,select{font:inherit}button{cursor:pointer}.topbar{background:linear-gradient(105deg,#061f48,#082c61);color:#fff;padding:20px 30px;display:flex;align-items:center;gap:20px;min-height:120px}
+.logo{width:66px;height:66px;border:3px solid #dceaff;border-radius:50%;display:grid;place-items:center;font-size:34px}.brand{flex:1}.label{color:#73b0ff;font-weight:800;font-size:14px;letter-spacing:.05em}
+.exam{display:flex;align-items:center;gap:10px}.exam input{width:min(420px,100%);background:transparent;color:#fff;border:1px solid transparent;border-radius:8px;padding:3px 7px;font-size:32px;font-weight:800;outline:none}.exam input:focus{border-color:#7fb5ff;background:#ffffff12}.hint{font-size:13px;color:#c6d8f3}
+.actions{display:flex;gap:12px}.btn{border:1px solid var(--border);background:#fff;color:var(--text);border-radius:10px;padding:13px 18px;min-height:50px;font-weight:750}.primary{background:#1670f5;color:#fff;border-color:#1670f5}
+.container{max-width:1500px;margin:auto;padding:27px 26px 34px}.toolbar{display:grid;grid-template-columns:68px 78px 1fr 68px;gap:12px;align-items:center;margin-bottom:22px}
+.nav,.today{height:52px;border:1px solid var(--border);background:#fff;border-radius:10px;color:var(--text);font-weight:750}.nav{font-size:27px}.weektitle{text-align:center;font-size:27px;font-weight:800}
+.calendar{background:#fff;border:1px solid var(--border);border-radius:13px;overflow:hidden;box-shadow:0 3px 14px #142d5012}.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+.day{min-width:0;min-height:610px;border-right:1px solid var(--border)}.day:last-child{border:0}.head{background:linear-gradient(#082d62,#062451);color:#fff;text-align:center;padding:14px 5px;min-height:76px}.dayname{font-weight:800;font-size:16px}.date{font-size:14px;margin-top:6px}.body{padding:16px 10px}
+.add{width:100%;border:1px dashed #a9c9fa;background:#fff;color:#0760dc;border-radius:9px;padding:12px 5px;margin-bottom:15px;font-weight:700}.add:hover{background:#f4f8ff}
+.card{border:1px solid #e4e9f1;border-left:3px solid var(--accent);border-radius:9px;padding:13px 10px 10px;margin-bottom:14px;box-shadow:0 2px 8px #142d500f;background:#fff}.title{display:flex;gap:9px;align-items:flex-start;font-weight:750;font-size:15px;line-height:1.35;min-height:42px}.icon{color:var(--accent);font-size:19px;width:20px;text-align:center}
+.card-actions{display:flex;gap:6px;margin-top:10px}.resolve,.done{flex:1;border:0;border-radius:8px;padding:9px 5px;font-size:13px;font-weight:750}
+.resolve{background:#f3f7ff;color:var(--accent)}.resolve:hover{filter:brightness(.96)}.done{background:#e9f8ee;color:#139447}.done:hover{background:#d9f2e2}.remove{width:34px;border:1px solid #e5e8ee;background:#fff;border-radius:8px;color:#7a8497}
+.rest{min-height:500px;display:grid;place-items:center;text-align:center;color:#149447;padding:20px}.cup{font-size:48px}.rest strong{display:block;font-size:17px;margin:9px 0 6px}.rest span{color:var(--muted);font-size:14px}
+.legend{display:flex;gap:28px;align-items:center;margin:13px 12px 0;font-size:14px;color:#40516d}.green{color:#139447}.purple{color:#7137d9}
+.footer{margin-top:27px;background:#fff;border:1px solid var(--border);border-radius:13px;display:grid;grid-template-columns:1fr 1fr;box-shadow:0 3px 14px #142d500c}.foot{padding:24px 38px;display:flex;gap:17px;align-items:center}.foot+.foot{border-left:1px solid var(--border)}.fi{font-size:33px}.ft{font-weight:800;color:#0862df;font-size:17px}.fx{margin-top:5px;color:var(--muted);font-size:14px}
+.modal-bg{display:none;position:fixed;inset:0;background:#04142d7a;align-items:center;justify-content:center;padding:20px;z-index:10}.modal-bg.open{display:flex}.modal{background:#fff;width:min(520px,100%);border-radius:15px;padding:24px;box-shadow:0 20px 70px #0004}.modal h2{margin:0 0 6px}.modal p{color:var(--muted)}.row{margin:14px 0}.row label{display:block;font-size:13px;font-weight:750;margin-bottom:6px}.row input,.row select{width:100%;padding:11px;border:1px solid #ccd5e3;border-radius:9px}.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}
+.empty{text-align:center;color:#8490a3;padding:15px 4px;font-size:13px}
+@media(max-width:1050px){.topbar{flex-wrap:wrap}.actions{width:100%}.calendar{overflow-x:auto}.grid{grid-template-columns:repeat(7,210px)}.day{min-width:210px}}
+@media(max-width:700px){.topbar{padding:17px 15px}.logo{width:55px;height:55px;font-size:29px}.exam input{font-size:25px}.actions{flex-wrap:wrap}.container{padding:17px 11px}.toolbar{grid-template-columns:48px 68px 1fr 48px}.weektitle{font-size:18px}.footer{grid-template-columns:1fr}.foot+.foot{border-left:0;border-top:1px solid var(--border)}.foot{padding:20px}}
+</style>
+</head>
+<body>
+
+<!-- =========================================================
+     CONFIGURAÇÃO DO PAINEL
+     EDITE SOMENTE ESTA ÁREA PARA ALTERAR O PLANEJAMENTO.
+     ========================================================= -->
+<script>
+const CONFIG={
+  nomeDaProva:"Revisão PCMA",
+
+  // Cadastre as matérias e, quando quiser, coloque o link do caderno.
+  materias:[
+    {id:"constitucional",nome:"Direito Constitucional",icone:"⚖",cor:"#6d28d9",url:""},
+    {id:"portugues",nome:"Língua Portuguesa",icone:"✎",cor:"#1267e8",url:""},
+    {id:"raciocinio",nome:"Raciocínio Lógico",icone:"▣",cor:"#16a34a",url:""},
+    {id:"informatica",nome:"Informática",icone:"▱",cor:"#f4511e",url:""},
+    {id:"administracao",nome:"Administração Pública",icone:"▥",cor:"#0796a8",url:""},
+    {id:"administrativo",nome:"Direito Administrativo",icone:"▤",cor:"#dc2626",url:""},
+    {id:"orcamento",nome:"Orçamento Público",icone:"$",cor:"#1267e8",url:""},
+    {id:"civil",nome:"Direito Civil",icone:"♙",cor:"#16a34a",url:""},
+    {id:"legislacao",nome:"Legislação Especial",icone:"⚒",cor:"#7c2d12",url:""},
+    {id:"tributario",nome:"Direito Tributário",icone:"▥",cor:"#6d28d9",url:""},
+    {id:"contabilidade",nome:"Contabilidade Geral",icone:"▥",cor:"#ec2387",url:""},
+    {id:"internacional",nome:"Direito Internacional",icone:"◎",cor:"#1267e8",url:""},
+    {id:"redacao",nome:"Redação Oficial",icone:"✎",cor:"#f59e0b",url:""}
+  ],
+
+  // 1=segunda, 2=terça, 3=quarta, 4=quinta, 5=sexta, 6=sábado, 0=domingo.
+  agenda:{
+    1:["constitucional","portugues","raciocinio"],
+    2:["informatica","administracao"],
+    3:["administrativo","orcamento"],
+    4:["civil","legislacao"],
+    5:["tributario","contabilidade"],
+    6:["internacional","redacao"],
+    0:[]
+  }
+};
+</script>
+
+<header class="topbar">
+  <div class="logo">🎯</div>
+  <div class="brand">
+    <div class="label">NOME DA PROVA</div>
+    <div class="exam"><input id="examName" aria-label="Nome da prova"><span style="font-size:27px">✎</span></div>
+    <div class="hint">Clique no campo para editar o nome da prova</div>
+  </div>
+  <div class="actions">
+    <button class="btn" id="manage">📁 Gerenciar Matérias</button>
+    <button class="btn primary" id="add">＋ Adicionar Matéria</button>
+  </div>
+</header>
+
+<main class="container">
+  <div class="toolbar">
+    <button class="nav" id="prev">←</button>
+    <button class="today" id="today">Hoje</button>
+    <div class="weektitle" id="weektitle"></div>
+    <button class="nav" id="next">→</button>
+  </div>
+
+  <section class="calendar"><div class="grid" id="grid"></div></section>
+
+  <div class="legend">
+    <span class="green">● Concluído: todas as questões resolvidas</span>
+    <span class="purple">● Em andamento: resolver questões</span>
+  </div>
+
+  <section class="footer">
+    <div class="foot"><div class="fi">💡</div><div><div class="ft">Dica da Semana</div><div class="fx">Mantenha o foco, siga o planejamento e confie no seu processo.</div></div></div>
+    <div class="foot"><div class="fi">🎯</div><div><div class="ft">Meta diária</div><div class="fx">Faça o seu melhor todos os dias!</div></div></div>
+  </section>
+</main>
+
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <h2>Adicionar matéria</h2>
+    <p>Escolha a matéria, o dia e, opcionalmente, o link para as questões.</p>
+    <div class="row"><label>Matéria</label><select id="subject"></select></div>
+    <div class="row"><label>Dia</label><select id="day">
+      <option value="1">Segunda-feira</option><option value="2">Terça-feira</option>
+      <option value="3">Quarta-feira</option><option value="4">Quinta-feira</option>
+      <option value="5">Sexta-feira</option><option value="6">Sábado</option><option value="0">Domingo</option>
+    </select></div>
+    <div class="row"><label>Link para resolver questões (opcional)</label><input id="url" type="url" placeholder="https://..."></div>
+    <div class="modal-actions"><button class="btn" id="cancel">Cancelar</button><button class="btn primary" id="save">Adicionar</button></div>
+  </div>
+</div>
+
+<script>
+const nomes=["DOMINGO","SEGUNDA","TERÇA","QUARTA","QUINTA","SEXTA","SÁBADO"];
+let monday=getMonday(new Date());
+
+const $=id=>document.getElementById(id);
+$("examName").value=CONFIG.nomeDaProva;
+
+function getMonday(d){
+  d=new Date(d);d.setHours(0,0,0,0);
+  const n=d.getDay();d.setDate(d.getDate()+(n===0?-6:1-n));return d;
+}
+function fmt(d){return new Intl.DateTimeFormat("pt-BR",{day:"2-digit",month:"2-digit"}).format(d)}
+function longFmt(d){return new Intl.DateTimeFormat("pt-BR",{day:"2-digit",month:"long",year:"numeric"}).format(d)}
+function esc(v){return String(v).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
+function subject(id){return CONFIG.materias.find(m=>m.id===id)}
+function storageKey(id){return "revisao-pcma-concluido-"+id}
+function isDone(id){return localStorage.getItem(storageKey(id))==="1"}
+function setDone(id,value){if(value)localStorage.setItem(storageKey(id),"1");else localStorage.removeItem(storageKey(id))}
+
+function render(){
+  const sunday=new Date(monday);sunday.setDate(sunday.getDate()+6);
+  $("weektitle").textContent=`Semana de ${longFmt(monday)} a ${longFmt(sunday)}`;
+  $("grid").innerHTML="";
+
+  for(let col=0;col<7;col++){
+    const dayNum=col===6?0:col+1;
+    const date=new Date(monday);date.setDate(date.getDate()+col);
+    const ids=CONFIG.agenda[dayNum]||[];
+    const d=document.createElement("div");d.className="day";
+
+    let cards="";
+    if(dayNum===0){
+      cards=`<div class="rest"><div><div class="cup">☕</div><strong>Dia de descanso</strong><span>Recarregue as energias!</span></div></div>`;
+    }else if(ids.length){
+      cards=ids.map(id=>card(id,dayNum)).join("");
+    }else{
+      cards=`<div class="empty">Nenhuma matéria programada.</div>`;
+    }
+
+    d.innerHTML=`<div class="head"><div class="dayname">${nomes[dayNum]}</div><div class="date">${fmt(date)}</div></div>
+      <div class="body"><button class="add" data-day="${dayNum}">＋ Adicionar matéria</button>${cards}</div>`;
+    $("grid").appendChild(d);
+  }
+
+  document.querySelectorAll(".add").forEach(b=>b.onclick=()=>openModal(Number(b.dataset.day)));
+  document.querySelectorAll(".resolve").forEach(b=>b.onclick=()=>{
+    const s=subject(b.dataset.id);
+    if(s.url)window.open(s.url,"_blank","noopener");
+    else alert(`O link de "${s.nome}" ainda não foi configurado.\\n\\nEdite o campo "url" dessa matéria na CONFIGURAÇÃO DO PAINEL.`);
+  });
+  document.querySelectorAll(".done").forEach(b=>b.onclick=()=>{
+    const id=b.dataset.id;
+    const newValue=!isDone(id);
+    setDone(id,newValue);
+    render();
+  });
+  document.querySelectorAll(".remove").forEach(b=>b.onclick=()=>{
+    const day=Number(b.dataset.day),id=b.dataset.id;
+    CONFIG.agenda[day]=(CONFIG.agenda[day]||[]).filter(x=>x!==id);
+    render();
+  });
+}
+
+function card(id,day){
+  const s=subject(id);if(!s)return"";
+  const done=isDone(id);
+  return `<article class="card" style="--accent:${s.cor}">
+    <div class="title"><span class="icon">${esc(s.icone)}</span><span>${esc(s.nome)}</span></div>
+    <div class="card-actions">
+      ${done
+        ? `<button class="done" data-id="${esc(id)}">✓ Concluído</button>`
+        : `<button class="resolve" data-id="${esc(id)}">▶ Resolver questões</button>
+           <button class="done" data-id="${esc(id)}" title="Marcar quando todas as questões forem resolvidas">✓</button>`}
+      <button class="remove" data-id="${esc(id)}" data-day="${day}" title="Remover deste dia">×</button>
+    </div>
+  </article>`;
+}
+
+function openModal(day=1){
+  $("subject").innerHTML=CONFIG.materias.map(s=>`<option value="${esc(s.id)}">${esc(s.nome)}</option>`).join("");
+  $("day").value=String(day);$("url").value="";$("modal").classList.add("open");
+}
+function closeModal(){$("modal").classList.remove("open")}
+
+$("save").onclick=()=>{
+  const id=$("subject").value,day=Number($("day").value),link=$("url").value.trim(),s=subject(id);
+  if(!s)return;
+  if(link)s.url=link;
+  CONFIG.agenda[day]??=[];
+  if(!CONFIG.agenda[day].includes(id))CONFIG.agenda[day].push(id);
+  closeModal();render();
+};
+$("cancel").onclick=closeModal;
+$("modal").onclick=e=>{if(e.target===$("modal"))closeModal()};
+$("add").onclick=()=>openModal(1);
+$("manage").onclick=()=>alert("As alterações permanentes para todos os alunos são feitas na área CONFIGURAÇÃO DO PAINEL, no início do index.html.\\n\\nVocê pode alterar o nome da prova, matérias, links e distribuição por dia.");
+$("prev").onclick=()=>{monday.setDate(monday.getDate()-7);render()};
+$("next").onclick=()=>{monday.setDate(monday.getDate()+7);render()};
+$("today").onclick=()=>{monday=getMonday(new Date());render()};
+$("examName").onchange=()=>{CONFIG.nomeDaProva=$("examName").value.trim()||"Revisão";document.title=CONFIG.nomeDaProva};
+
+render();
+</script>
+</body>
+</html>
