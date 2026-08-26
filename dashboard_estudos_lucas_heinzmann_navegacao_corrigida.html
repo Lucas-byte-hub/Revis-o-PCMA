@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel de Estudos — Lucas Heinzmann</title>
+<style>
+:root{
+  --bg:#07101d;--side:#020617;--text:#e5e7eb;--muted:#94a3b8;
+  --line:rgba(255,255,255,.10);--accent:#60a5fa
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--text)}
+body{background:#050b14}
+.dashboard{
+  min-height:100vh;display:grid;grid-template-columns:230px minmax(0,1fr);
+  background:
+    radial-gradient(circle at 78% 8%,rgba(37,99,235,.20),transparent 28%),
+    radial-gradient(circle at 90% 90%,rgba(124,58,237,.16),transparent 30%),
+    linear-gradient(135deg,#07101d,#111827 58%,#0b1220)
+}
+.sidebar{
+  min-height:100vh;background:rgba(2,6,23,.94);
+  border-right:1px solid var(--line);padding:28px 16px;
+  display:flex;flex-direction:column
+}
+.logo{font-size:18px;font-weight:900;padding:0 10px 34px}
+.logo span{color:var(--accent)}
+.label{font-size:10px;text-transform:uppercase;letter-spacing:.16em;color:#64748b;font-weight:800;padding:0 10px 10px}
+.menu{display:flex;flex-direction:column;gap:6px}
+.menu a{
+  display:block;border:1px solid transparent;background:transparent;color:#94a3b8;
+  text-align:left;padding:13px 12px;border-radius:10px;font-size:13px;
+  font-weight:750;text-decoration:none
+}
+.menu a:hover{background:rgba(255,255,255,.05);color:#fff}
+.menu a.active{background:rgba(37,99,235,.20);border-color:rgba(96,165,250,.22);color:#dbeafe}
+.signature-left{margin-top:auto;padding:18px 10px 4px;color:#64748b;font-size:10px;line-height:1.5}
+.signature-left strong{display:block;color:#cbd5e1;font-size:11px;margin-top:2px}
+.content{min-width:0;padding:34px}
+.page{display:none;max-width:1500px;margin:0 auto}
+.page:target{display:block}
+#page-questoes{display:block}
+body:has(.page:target) #page-questoes{display:none}
+body:has(#page-inicio:target) #page-inicio,
+body:has(#page-questoes:target) #page-questoes,
+body:has(#page-cronograma:target) #page-cronograma,
+body:has(#page-desempenho:target) #page-desempenho{display:block}
+.header{margin-bottom:25px}
+.kicker{font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:.18em;font-weight:900}
+h1{font-size:30px;margin:7px 0 8px;letter-spacing:-.03em}
+.subtitle{font-size:13px;color:var(--muted)}
+.calendar{
+  background:rgba(15,23,42,.72);border:1px solid var(--line);
+  border-radius:20px;padding:16px;backdrop-filter:blur(12px)
+}
+.scroll{overflow-x:auto;padding-bottom:4px}
+.week{display:grid;grid-template-columns:repeat(7,minmax(150px,1fr));gap:9px;min-width:1080px}
+.day-name{text-align:center;color:#94a3b8;font-size:11px;text-transform:uppercase;font-weight:900;padding:5px}
+.day{min-height:235px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:8px;display:flex;flex-direction:column;gap:7px}
+.date{font-size:10px;color:#64748b;font-weight:800}
+.subject{
+  display:block;width:100%;border-radius:9px;padding:10px 9px;min-height:42px;
+  font-size:11px;line-height:1.25;font-weight:800;text-align:left;
+  overflow-wrap:anywhere;color:#fff;text-decoration:none;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.10);
+  transition:filter .15s,transform .15s
+}
+.subject:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.subject:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.info{margin-top:12px;color:#64748b;font-size:11px}
+.card{
+  background:rgba(15,23,42,.72);border:1px solid var(--line);
+  border-radius:18px;padding:24px;max-width:900px
+}
+.card h2{margin:0 0 10px;font-size:20px}
+.card p{margin:0;color:var(--muted);font-size:13px;line-height:1.7}
+@media(max-width:850px){
+  .dashboard{grid-template-columns:1fr}
+  .sidebar{min-height:auto;border-right:0;border-bottom:1px solid var(--line);padding:14px}
+  .logo{padding:5px 8px 14px}.label{display:none}
+  .menu{flex-direction:row;overflow-x:auto}.menu a{white-space:nowrap}
+  .signature-left{display:none}.content{padding:20px}
+}
+</style>
+</head>
+<body>
+
+<!-- =========================================================
+     CONFIGURAÇÃO DA PROVA — EDITE SOMENTE ESTA PARTE
+
+     Para usar em outra prova:
+     1) troque nomeProva;
+     2) altere o nome das matérias;
+     3) altere os links do TEC;
+     4) adicione/remova matérias dentro de cada dia.
+
+     O aluno NÃO verá esta configuração como tela de edição.
+========================================================== -->
+<script>
+const CONFIG = {
+  nomeProva: "Painel de Estudos",
+
+  dias: {
+    "Segunda-feira": [
+      {
+        materia: "Língua Portuguesa",
+        url: "https://www.tecconcursos.com.br/questoes/cadernos/101625688",
+        cor: "#0369a1"
+      },
+      {
+        materia: "Direito Constitucional",
+        url: "https://www.tecconcursos.com.br/questoes/cadernos/101625688",
+        cor: "#be123c"
+      }
+    ],
+
+    "Terça-feira": [
+      {
+        materia: "Direito Administrativo",
+        url: "https://www.tecconcursos.com.br/questoes/cadernos/101625688",
+        cor: "#15803d"
+      },
+      {
+        materia: "Administração Pública",
+        url: "https://www.tecconcursos.com.br/questoes/cadernos/101625688",
+        cor: "#7e22ce"
+      },
+      {
+        materia: "Raciocínio Lógico",
+        url: "https://www.tecconcursos.com.br/questoes/cadernos/101625688",
+        cor: "#a16207"
+      }
+    ],
+
+    "Quarta-feira": [
+      {
+        materia: "Administração Financeira e Orçamentária",
+        url: "https://www.tecconcursos.com.br/questoes/cadernos/101625688",
+        cor: "#c2410c"
+      }
+    ],
+
+    "Quinta-feira": [
+      {
+        materia: "Informática",
+        url: "https://www.tecconcursos.com.br/questoes/cadernos/101625688",
+        cor: "#0f766e"
+      },
+      {
+        materia: "Língua Portuguesa",
+        url: "https://www.tecconcursos.com.br/questoes/cadernos/101625688",
+        cor: "#0369a1"
+      }
+    ],
+
+    "Sexta-feira": [
+      {
+        materia: "Direito Constitucional",
+        url: "https://www.tecconcursos.com.br/questoes/cadernos/101625688",
+        cor: "#be123c"
+      },
+      {
+        materia: "Direito Administrativo",
+        url: "https://www.tecconcursos.com.br/questoes/cadernos/101625688",
+        cor: "#c2410c"
+      }
+    ],
+
+    "Sábado": [
+      {
+        materia: "Raciocínio Lógico",
+        url: "https://www.tecconcursos.com.br/questoes/cadernos/101625688",
+        cor: "#a16207"
+      }
+    ],
+
+    "Domingo": [
+      {
+        materia: "Administração Pública",
+        url: "https://www.tecconcursos.com.br/questoes/cadernos/101625688",
+        cor: "#7e22ce"
+      },
+      {
+        materia: "Informática",
+        url: "https://www.tecconcursos.com.br/questoes/cadernos/101625688",
+        cor: "#0f766e"
+      }
+    ]
+  }
+};
+
+const ORDEM_DIAS=[
+  "Segunda-feira","Terça-feira","Quarta-feira",
+  "Quinta-feira","Sexta-feira","Sábado","Domingo"
+];
+
+function renderCalendar(){
+  const week=document.getElementById("week");
+  week.innerHTML="";
+
+  ORDEM_DIAS.forEach((dia,index)=>{
+    const head=document.createElement("div");
+    head.className="day-name";
+    head.textContent=dia;
+    week.appendChild(head);
+
+    const column=document.createElement("div");
+    column.className="day";
+
+    const date=document.createElement("span");
+    date.className="date";
+    date.textContent=String(index+1).padStart(2,"0");
+    column.appendChild(date);
+
+    const materias=Array.isArray(CONFIG.dias[dia]) ? CONFIG.dias[dia] : [];
+
+    if(!materias.length){
+      const vazio=document.createElement("div");
+      vazio.className="info";
+      vazio.textContent="Sem matéria";
+      column.appendChild(vazio);
+    }
+
+    materias.forEach(item=>{
+      if(!item || !item.materia) return;
+
+      const link=document.createElement("a");
+      link.className="subject";
+      link.textContent=item.materia;
+      link.href=item.url || "#";
+      link.target="_blank";
+      link.rel="noopener noreferrer";
+      link.style.background=item.cor || "#334155";
+
+      if(!item.url || item.url==="#"){
+        link.removeAttribute("target");
+        link.addEventListener("click",event=>{
+          event.preventDefault();
+          alert("O link desta matéria ainda não foi configurado.");
+        });
+      }
+
+      column.appendChild(link);
+    });
+
+    week.appendChild(column);
+  });
+
+  document.querySelectorAll("[data-prova]").forEach(el=>{
+    el.textContent=CONFIG.nomeProva || "Painel de Estudos";
+  });
+
+  document.title=(CONFIG.nomeProva || "Painel de Estudos")+" — Lucas Heinzmann";
+}
+
+document.addEventListener("DOMContentLoaded",renderCalendar);
+</script>
+
+<div class="dashboard">
+
+  <!-- ABA LATERAL ESQUERDA -->
+  <aside class="sidebar">
+    <div class="logo">MEU <span>PAINEL</span></div>
+
+    <div class="label">Navegação</div>
+
+    <nav class="menu" aria-label="Navegação principal">
+      <a href="#page-inicio">⌂ &nbsp; Início</a>
+      <a href="#page-questoes" class="active">▣ &nbsp; Resolver Questões</a>
+      <a href="#page-cronograma">◷ &nbsp; Cronograma</a>
+      <a href="#page-desempenho">✓ &nbsp; Desempenho</a>
+    </nav>
+
+    <div class="signature-left">
+      Painel de estudos
+      <strong>By Lucas Heinzmann</strong>
+    </div>
+  </aside>
+
+  <main class="content">
+
+    <section id="page-inicio" class="page">
+      <header class="header">
+        <div class="kicker">Painel de Estudos</div>
+        <h1 data-prova>Painel de Estudos</h1>
+        <div class="subtitle">Bem-vindo ao seu painel de preparação.</div>
+      </header>
+
+      <div class="card">
+        <h2>Início</h2>
+        <p>
+          Utilize a barra lateral para navegar pelo painel.
+          Em <strong>Resolver Questões</strong>, clique diretamente nas matérias
+          para abrir os cadernos configurados do TEC Concursos.
+        </p>
+      </div>
+    </section>
+
+    <section id="page-questoes" class="page">
+      <header class="header">
+        <div class="kicker">Resolver Questões</div>
+        <h1 data-prova>Painel de Estudos</h1>
+        <div class="subtitle">
+          Clique em uma matéria para abrir o respectivo caderno de questões.
+        </div>
+      </header>
+
+      <section class="calendar">
+        <div class="scroll">
+          <div id="week" class="week"></div>
+        </div>
+
+        <div class="info">
+          Os sete dias permanecem em uma única linha. Cada dia pode receber
+          várias matérias.
+        </div>
+      </section>
+    </section>
+
+    <section id="page-cronograma" class="page">
+      <header class="header">
+        <div class="kicker">Cronograma</div>
+        <h1>Cronograma de Estudos</h1>
+        <div class="subtitle">Área preparada para futuras funções.</div>
+      </header>
+
+      <div class="card">
+        <h2>Cronograma</h2>
+        <p>Esta seção está preparada para os próximos aprimoramentos do painel.</p>
+      </div>
+    </section>
+
+    <section id="page-desempenho" class="page">
+      <header class="header">
+        <div class="kicker">Desempenho</div>
+        <h1>Desempenho</h1>
+        <div class="subtitle">Área preparada para futuras funções.</div>
+      </header>
+
+      <div class="card">
+        <h2>Desempenho</h2>
+        <p>Esta seção está preparada para os próximos aprimoramentos do painel.</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+</body>
+</html>
